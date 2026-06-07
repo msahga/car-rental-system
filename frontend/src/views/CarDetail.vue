@@ -31,7 +31,7 @@
             <el-tag :type="statusType(car.status)">{{ statusText(car.status) }}</el-tag>
           </div>
           <div class="price-row">
-            <span class="price">￥{{ car.price }}/天</span>
+            <span class="price">￥{{ car.dailyPrice }}/天</span>
           </div>
         </div>
       </div>
@@ -208,8 +208,8 @@ const rentalDays = computed(() => {
  * 计算订单总价
  */
 const totalPrice = computed(() => {
-  if (!car.value.price || rentalDays.value === 0) return 0
-  return (car.value.price * rentalDays.value).toFixed(2)
+  if (!car.value.dailyPrice || rentalDays.value === 0) return 0
+  return (car.value.dailyPrice * rentalDays.value).toFixed(2)
 })
 
 /**

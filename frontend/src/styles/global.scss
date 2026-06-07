@@ -144,3 +144,13 @@ a:hover {
     font-size: 18px;
   }
 }
+
+/* 状态选择框样式 - 增大宽度 */
+.status-select {
+  min-width: 150px;
+}
+
+/* 全局Element选择框样式 */
+.el-select {
+  min-width: 140px;
+}

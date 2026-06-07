@@ -39,9 +39,9 @@
             {{ gearboxText(row.gearbox) }}
           </template>
         </el-table-column>
-        <el-table-column prop="price" label="日租价">
+        <el-table-column prop="dailyPrice" label="日租价">
           <template #default="{ row }">
-            ￥{{ row.price }}
+            ￥{{ row.dailyPrice }}
           </template>
         </el-table-column>
         <el-table-column prop="status" label="状态">
@@ -106,8 +106,8 @@
             <el-option label="混动" :value="4" />
           </el-select>
         </el-form-item>
-        <el-form-item label="日租价格" prop="price">
-          <el-input-number v-model="form.price" :min="0" :precision="2" />
+        <el-form-item label="日租价格" prop="dailyPrice">
+          <el-input-number v-model="form.dailyPrice" :min="0" :precision="2" />
         </el-form-item>
         <el-form-item label="所在网点" prop="storeId">
           <el-select v-model="form.storeId" placeholder="请选择网点">
@@ -207,7 +207,7 @@ const form = reactive({
   seats: null,
   gearbox: null,
   fuelType: null,
-  price: 0,
+  dailyPrice: 0,
   storeId: null,
   image: ''
 })
@@ -220,7 +220,7 @@ const rules = {
   seats: [{ required: true, message: '请选择座位数', trigger: 'change' }],
   gearbox: [{ required: true, message: '请选择挡位类型', trigger: 'change' }],
   fuelType: [{ required: true, message: '请选择燃油类型', trigger: 'change' }],
-  price: [{ required: true, message: '请输入日租价格', trigger: 'blur' }],
+  dailyPrice: [{ required: true, message: '请输入日租价格', trigger: 'blur' }],
   storeId: [{ required: true, message: '请选择网点', trigger: 'change' }]
 }
 

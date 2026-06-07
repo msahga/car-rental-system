@@ -35,12 +35,12 @@ export default defineConfig({
     // API代理配置（解决开发环境跨域问题）
     proxy: {
       '/api': {
-        target: 'http://localhost:8081/api', // 后端API地址（包含context-path）
+        target: 'http://localhost:8082/api', // 后端API地址（包含context-path）
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, '')
       },
       '/images': {
-        target: 'http://localhost:8081/api',
+        target: 'http://localhost:8082/api',
         changeOrigin: true
       }
     },

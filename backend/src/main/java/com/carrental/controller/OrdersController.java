@@ -1,5 +1,6 @@
 package com.carrental.controller;
 
+import com.carrental.dto.OrderDetailDTO;
 import com.carrental.entity.Orders;
 import com.carrental.interceptor.UserContext;
 import com.carrental.result.PageResult;
@@ -84,16 +85,16 @@ public class OrdersController {
      * @param page 页码
      * @param size 每页大小
      * @param status 订单状态（可选）
-     * @return 分页结果
+     * @return 分页结果（包含车辆和网点信息）
      */
     @GetMapping("/user")
-    public Result<PageResult<Orders>> userOrders(
+    public Result<PageResult<OrderDetailDTO>> userOrders(
             @RequestParam(defaultValue = "1") Long page,
             @RequestParam(defaultValue = "10") Long size,
             @RequestParam(required = false) Integer status) {
         Long userId = UserContext.getUserId();
         log.info("查询用户订单列表请求：userId={}, page={}, size={}, status={}", userId, page, size, status);
-        PageResult<Orders> result = ordersService.userOrders(userId, page, size, status);
+        PageResult<OrderDetailDTO> result = ordersService.userOrders(userId, page, size, status);
         return Result.success(result);
     }
 
@@ -101,12 +102,12 @@ public class OrdersController {
      * 查询订单详情
      * 
      * @param id 订单ID
-     * @return 订单信息
+     * @return 订单信息（包含车辆和网点信息）
      */
     @GetMapping("/{id}")
-    public Result<Orders> getById(@PathVariable Long id) {
+    public Result<OrderDetailDTO> getById(@PathVariable Long id) {
         log.info("查询订单详情请求：id={}", id);
-        Orders order = ordersService.getById(id);
+        OrderDetailDTO order = ordersService.getDetailById(id);
         return Result.success(order);
     }
 
@@ -132,10 +133,10 @@ public class OrdersController {
      * @param orderNo 订单编号（可选）
      * @param userId 用户ID（可选）
      * @param status 订单状态（可选）
-     * @return 分页结果
+     * @return 分页结果（包含车辆和网点信息）
      */
     @GetMapping("/page")
-    public Result<PageResult<Orders>> page(
+    public Result<PageResult<OrderDetailDTO>> page(
             @RequestParam(defaultValue = "1") Long page,
             @RequestParam(defaultValue = "10") Long size,
             @RequestParam(required = false) String orderNo,
@@ -147,7 +148,7 @@ public class OrdersController {
         }
         log.info("分页查询订单列表请求：page={}, size={}, orderNo={}, userId={}, status={}", 
                 page, size, orderNo, userId, status);
-        PageResult<Orders> result = ordersService.page(page, size, orderNo, userId, status);
+        PageResult<OrderDetailDTO> result = ordersService.pageDetail(page, size, orderNo, userId, status);
         return Result.success(result);
     }
 

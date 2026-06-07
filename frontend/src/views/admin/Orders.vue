@@ -30,9 +30,8 @@
     <!-- 订单列表 -->
     <div class="order-list">
       <el-table :data="orders" v-loading="loading" stripe>
-        <el-table-column prop="id" label="ID" width="80" />
         <el-table-column prop="orderNo" label="订单编号" width="180" />
-        <el-table-column prop="userId" label="用户ID" width="80" />
+        <el-table-column prop="username" label="用户ID" width="100" />
         <el-table-column prop="carBrand" label="车辆品牌" />
         <el-table-column prop="carModel" label="车辆型号" />
         <el-table-column prop="days" label="租赁天数" width="80" />
@@ -383,6 +382,7 @@ onMounted(() => {
     padding: 20px;
     border-radius: 8px;
     margin-bottom: 20px;
+    gap: 41px;
   }
 
   .order-list {

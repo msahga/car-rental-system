@@ -4,11 +4,16 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.IdUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.carrental.dto.OrderDetailDTO;
 import com.carrental.entity.Car;
 import com.carrental.entity.Orders;
+import com.carrental.entity.Store;
+import com.carrental.entity.User;
 import com.carrental.exception.BusinessException;
 import com.carrental.mapper.CarMapper;
 import com.carrental.mapper.OrdersMapper;
+import com.carrental.mapper.StoreMapper;
+import com.carrental.mapper.UserMapper;
 import com.carrental.result.PageResult;
 import com.carrental.service.CarService;
 import com.carrental.service.OrdersService;
@@ -44,6 +49,12 @@ public class OrdersServiceImpl implements OrdersService {
 
     @Autowired
     private CarMapper carMapper;
+
+    @Autowired
+    private StoreMapper storeMapper;
+
+    @Autowired
+    private UserMapper userMapper;
 
     @Autowired
     private CarService carService;
@@ -124,10 +135,10 @@ public class OrdersServiceImpl implements OrdersService {
     }
 
     /**
-     * 查询用户订单列表
+     * 查询用户订单列表（包含车辆和网点信息）
      */
     @Override
-    public PageResult<Orders> userOrders(Long userId, Long page, Long size, Integer status) {
+    public PageResult<OrderDetailDTO> userOrders(Long userId, Long page, Long size, Integer status) {
         // 创建分页对象
         Page<Orders> pageObj = new Page<>(page, size);
 
@@ -140,8 +151,20 @@ public class OrdersServiceImpl implements OrdersService {
         // 执行分页查询
         Page<Orders> result = ordersMapper.selectPage(pageObj, wrapper);
 
+        // 转换为OrderDetailDTO列表
+        java.util.List<OrderDetailDTO> detailList = result.getRecords().stream()
+                .map(this::buildOrderDetailDTO)
+                .collect(java.util.stream.Collectors.toList());
+
         // 返回分页结果
-        return PageResult.of(result);
+        PageResult<OrderDetailDTO> pageResult = new PageResult<>();
+        pageResult.setRecords(detailList);
+        pageResult.setTotal(result.getTotal());
+        pageResult.setCurrent(result.getCurrent());
+        pageResult.setSize(result.getSize());
+        pageResult.setPages(result.getPages());
+        
+        return pageResult;
     }
 
     /**
@@ -150,6 +173,96 @@ public class OrdersServiceImpl implements OrdersService {
     @Override
     public Orders getById(Long id) {
         return ordersMapper.selectById(id);
+    }
+
+    /**
+     * 根据ID查询订单详情（包含车辆和网点信息）
+     */
+    @Override
+    public OrderDetailDTO getDetailById(Long id) {
+        Orders order = ordersMapper.selectById(id);
+        if (order == null) {
+            return null;
+        }
+        return buildOrderDetailDTO(order);
+    }
+
+    /**
+     * 构建订单详情DTO（补充用户、车辆和网点信息）
+     */
+    private OrderDetailDTO buildOrderDetailDTO(Orders order) {
+        OrderDetailDTO dto = OrderDetailDTO.fromOrders(order);
+        
+        // 查询用户信息
+        if (order.getUserId() != null) {
+            User user = userMapper.selectById(order.getUserId());
+            if (user != null) {
+                dto.setUsername(user.getUsername());
+            }
+        }
+        
+        // 查询车辆信息
+        if (order.getCarId() != null) {
+            Car car = carMapper.selectById(order.getCarId());
+            if (car != null) {
+                dto.setCarBrand(car.getBrand());
+                dto.setCarModel(car.getModel());
+                dto.setCarNumber(car.getCarNumber());
+                dto.setCarImage(car.getImage());
+            }
+        }
+        
+        // 查询取车网点信息
+        if (order.getPickupStoreId() != null) {
+            Store store = storeMapper.selectById(order.getPickupStoreId());
+            if (store != null) {
+                dto.setPickupStoreName(store.getName());
+            }
+        }
+        
+        // 查询还车网点信息
+        if (order.getReturnStoreId() != null) {
+            Store store = storeMapper.selectById(order.getReturnStoreId());
+            if (store != null) {
+                dto.setReturnStoreName(store.getName());
+            }
+        }
+        
+        return dto;
+    }
+
+    /**
+     * 分页查询订单列表（管理员，包含车辆和网点信息）
+     */
+    @Override
+    public PageResult<OrderDetailDTO> pageDetail(Long page, Long size, String orderNo, Long userId, Integer status) {
+        // 创建分页对象
+        Page<Orders> pageObj = new Page<>(page, size);
+
+        // 创建查询条件
+        LambdaQueryWrapper<Orders> wrapper = new LambdaQueryWrapper<>();
+        wrapper.like(StringUtils.hasText(orderNo), Orders::getOrderNo, orderNo);
+        wrapper.eq(userId != null, Orders::getUserId, userId);
+        wrapper.eq(status != null, Orders::getStatus, status);
+        wrapper.orderByDesc(Orders::getCreateTime);
+
+        // 执行分页查询
+        Page<Orders> result = ordersMapper.selectPage(pageObj, wrapper);
+
+        // 转换为OrderDetailDTO列表
+        java.util.List<OrderDetailDTO> detailList = result.getRecords().stream()
+                .map(this::buildOrderDetailDTO)
+                .collect(java.util.stream.Collectors.toList());
+
+        // 返回分页结果
+        PageResult<OrderDetailDTO> pageResult = new PageResult<>();
+        pageResult.setRecords(detailList);
+        pageResult.setTotal(result.getTotal());
+        pageResult.setCurrent(result.getCurrent());
+        pageResult.setSize(result.getSize());
+        pageResult.setPages(result.getPages());
+        
+        return pageResult;
     }
 
     /**

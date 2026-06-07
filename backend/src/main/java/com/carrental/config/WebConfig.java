@@ -45,6 +45,7 @@ public class WebConfig implements WebMvcConfigurer {
                         // 公开接口（车辆列表、网点列表、公告列表）
                         "/car/list",
                         "/car/detail/**",
+                        "/car/get/**",
                         "/store/list",
                         "/notice/list",
                         "/notice/detail/**",

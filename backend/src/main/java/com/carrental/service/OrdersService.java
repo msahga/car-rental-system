@@ -1,6 +1,7 @@
 package com.carrental.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.carrental.dto.OrderDetailDTO;
 import com.carrental.entity.Orders;
 import com.carrental.result.PageResult;
 
@@ -49,9 +50,9 @@ public interface OrdersService {
      * 
      * @param userId 用户ID
      * @param status 订单状态（可选）
-     * @return 订单列表
+     * @return 订单列表（包含车辆和网点信息）
      */
-    PageResult<Orders> userOrders(Long userId, Long page, Long size, Integer status);
+    PageResult<OrderDetailDTO> userOrders(Long userId, Long page, Long size, Integer status);
 
     /**
      * 根据ID查询订单详情
@@ -60,6 +61,26 @@ public interface OrdersService {
      * @return 订单信息
      */
     Orders getById(Long id);
+
+    /**
+     * 根据ID查询订单详情（包含车辆和网点信息）
+     * 
+     * @param id 订单ID
+     * @return 订单详情DTO
+     */
+    OrderDetailDTO getDetailById(Long id);
+
+    /**
+     * 分页查询订单列表（管理员，包含车辆和网点信息）
+     * 
+     * @param page 页码
+     * @param size 每页大小
+     * @param orderNo 订单编号（可选）
+     * @param userId 用户ID（可选）
+     * @param status 订单状态（可选）
+     * @return 分页结果
+     */
+    PageResult<OrderDetailDTO> pageDetail(Long page, Long size, String orderNo, Long userId, Integer status);
 
     /**
      * 取消订单（用户）
