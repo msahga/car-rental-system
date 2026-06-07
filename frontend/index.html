@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="汽车租赁管理系统">
+  <meta name="keywords" content="汽车租赁,租车系统,毕业设计">
+  <title>汽车租赁管理系统</title>
+  <link rel="icon" type="image/svg+xml" href="/vite.svg">
+</head>
+<body>
+  <div id="app">
+    <div style="text-align: center; margin-top: 100px; font-family: Arial, sans-serif;">
+      <h1 style="color: #409eff;">汽车租赁管理系统</h1>
+      <p style="color: #666;">正在加载中...</p>
+    </div>
+  </div>
+  <script>
+    // 全局错误捕获
+    window.addEventListener('error', function(e) {
+      console.error('全局错误:', e.error);
+      alert('页面加载出错: ' + e.error.message);
+    });
+    
+    window.addEventListener('unhandledrejection', function(e) {
+      console.error('未处理的Promise拒绝:', e.reason);
+      alert('异步操作出错: ' + e.reason);
+    });
+    
+    console.log('HTML页面已加载，准备加载Vue应用...');
+  </script>
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,104 @@
+# =====================================================
+# 汽车租赁管理系统后端配置文件
+# SpringBoot 2.7.18 + MySQL 8.0
+# =====================================================
+
+server:
+  port: 8082
+  servlet:
+    context-path: /api
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+
+spring:
+  application:
+    name: car-rental-backend
+
+  # 数据源配置
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/car_rental?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    username: root
+    password: 123456
+    # HikariCP连接池配置
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 20
+      auto-commit: true
+      idle-timeout: 30000
+      pool-name: CarRentalHikariCP
+      max-lifetime: 1800000
+      connection-timeout: 30000
+
+  # Jackson JSON配置
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+    serialization:
+      write-dates-as-timestamps: false
+
+  # 文件上传配置
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10MB
+      max-request-size: 100MB
+
+  # 静态资源配置
+  web:
+    resources:
+      static-locations: classpath:/static/
+
+# MyBatis-Plus配置
+mybatis-plus:
+  # Mapper XML文件位置
+  mapper-locations: classpath:mapper/*.xml
+  # 实体类扫描路径
+  type-aliases-package: com.carrental.entity
+  # 配置
+  configuration:
+    # 开启驼峰命名转换
+    map-underscore-to-camel-case: true
+    # 日志输出
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  # 全局配置
+  global-config:
+    db-config:
+      # 主键类型：自增
+      id-type: auto
+      # 逻辑删除字段
+      logic-delete-field: deleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+      # 字段策略
+      insert-strategy: not_null
+      update-strategy: not_null
+
+# JWT配置
+jwt:
+  # 密钥（生产环境请修改）
+  secret: car-rental-secret-key-2024-graduation-project
+  # 过期时间：24小时（单位：毫秒）
+  expiration: 86400000
+  # Token前缀
+  header: Authorization
+  # Token前缀字符串
+  prefix: Bearer
+
+# 日志配置
+logging:
+  level:
+    root: info
+    com.carrental: debug
+    com.carrental.mapper: debug
+  pattern:
+    console: '%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{50} - %msg%n'
+  file:
+    name: logs/car-rental.log
+
+# 文件上传路径配置
+file:
+  upload-path: /uploads/
+  image-path: /images/

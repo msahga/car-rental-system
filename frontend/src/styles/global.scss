@@ -1,0 +1,146 @@
+/**
+ * 全局样式文件
+ * 
+ * 功能说明：
+ * 1. 定义全局CSS样式
+ * 2. 重置浏览器默认样式
+ * 3. 定义通用样式类
+ * 
+ * @author 毕业设计项目
+ * @version 1.0.0
+ */
+
+/* 重置浏览器默认样式 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* 设置根元素字体 */
+html, body {
+  font-family: 'Microsoft YaHei', 'PingFang SC', 'Helvetica Neue', Arial, sans-serif;
+  font-size: 14px;
+  color: #333;
+  background-color: #f5f5f5;
+  height: 100%;
+  width: 100%;
+}
+
+/* 设置应用容器高度 */
+#app {
+  height: 100%;
+  width: 100%;
+}
+
+/* 链接样式 */
+a {
+  text-decoration: none;
+  color: #409eff;
+}
+
+a:hover {
+  color: #66b1ff;
+}
+
+/* 滚动条样式 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #c1c1c1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #f1f1f1;
+}
+
+/* 通用容器样式 */
+.container {
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 4px;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+}
+
+/* 卡片标题样式 */
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+/* 搜索表单样式 */
+.search-form {
+  margin-bottom: 20px;
+}
+
+/* 分页容器样式 */
+.pagination-container {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+/* 页面标题样式 */
+.page-title {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #303133;
+}
+
+/* 状态标签样式 */
+.status-tag {
+  margin-right: 5px;
+}
+
+/* 表格操作按钮样式 */
+.table-actions {
+  display: flex;
+  gap: 10px;
+}
+
+/* 表单样式 */
+.form-container {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* 图片样式 */
+.image-preview {
+  max-width: 100%;
+  max-height: 300px;
+  object-fit: contain;
+}
+
+/* 空数据提示样式 */
+.empty-data {
+  text-align: center;
+  padding: 40px;
+  color: #909399;
+}
+
+/* 加载状态样式 */
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+}
+
+/* 响应式布局 */
+@media screen and (max-width: 768px) {
+  .container {
+    padding: 10px;
+  }
+  
+  .page-title {
+    font-size: 18px;
+  }
+}

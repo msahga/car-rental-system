@@ -1,0 +1,42 @@
+# 依赖目录
+node_modules/
+target/
+
+# 构建输出
+dist/
+build/
+
+# IDE配置
+.idea/
+.vscode/
+*.iml
+
+# 日志文件
+*.log
+logs/
+
+# 系统文件
+.DS_Store
+Thumbs.db
+
+# 环境变量
+.env
+.env.local
+.env.*.local
+
+# 编译文件
+*.class
+*.jar
+*.war
+
+# 临时文件
+*.tmp
+*.bak
+*.swp
+
+# 数据库
+*.db
+*.sqlite
+
+# 前端锁文件（可保留）
+# package-lock.json
